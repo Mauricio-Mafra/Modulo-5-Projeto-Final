@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Infrastructure.Repositories
 {
@@ -26,7 +27,7 @@ namespace Infrastructure.Repositories
         {
             var order = _orders.FirstOrDefault(o => o.Id == id);
             if (order is null) {
-                throw new Exception();
+                throw new NotFoundException("Order not found!");
             }
             _orders.Remove(order);
         }
@@ -46,7 +47,7 @@ namespace Infrastructure.Repositories
             var order = _orders.FirstOrDefault(o => o.Id == id);
             if (order is null)
             {
-                throw new Exception();
+                throw new NotFoundException("Order not found!");
             }
             order.ProductId = orderUpdateData.ProductId;
             order.UserId = orderUpdateData.UserId;

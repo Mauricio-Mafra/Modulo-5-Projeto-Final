@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Infrastructure.Repositories
 {
@@ -27,17 +28,18 @@ namespace Infrastructure.Repositories
         {
             var user = _users.FirstOrDefault(p => p.Id == id);
 
-            if (user is null)
-            {
-                throw new Exception("User not found!");
-            }
             return user;
         }
         public void Delete(int id)
         {
-            var User = GetById(id);
+            var user = GetById(id);
 
-            _users.Remove(User!);
+            if (user is null)
+            {
+                throw new NotFoundException("User not found!");
+            }
+
+            _users.Remove(user!);
         }
 
         public List<User> GetAll()
@@ -48,6 +50,12 @@ namespace Infrastructure.Repositories
         public User Update(User updatedUser, int id)
         {
             var user = GetById(id);
+
+            if (user is null)
+            {
+                throw new NotFoundException("User not found!");
+            }
+
             _users.Remove(user!);
 
             user!.Name = updatedUser.Name;

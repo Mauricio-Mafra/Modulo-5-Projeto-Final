@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Infrastructure.Repositories
 {
@@ -27,15 +28,17 @@ namespace Infrastructure.Repositories
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
 
-            if (product is null)
-            {
-                throw new Exception("Product not found!");
-            }
             return product;
         }
         public void Delete(int id)
         {
             var product = GetById(id);
+
+            if(product is null)
+            {
+                throw new NotFoundException("Product not found!");
+
+            }
 
             _products.Remove(product!);
         }
@@ -48,6 +51,12 @@ namespace Infrastructure.Repositories
         public Product Update(Product updatedProduct, int id)
         {
             var product = GetById(id);
+
+            if (product is null)
+            {
+                throw new NotFoundException("Product not found!");
+            }
+
             _products.Remove(product!);
 
             product!.Name = updatedProduct.Name;
