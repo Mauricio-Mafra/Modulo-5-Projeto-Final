@@ -3,7 +3,7 @@
     public class Order
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public Product OrderItem { get; set; }
+        public required int UserId { get; set; }
+        public required int ProductId { get; set; }
     }
 }
